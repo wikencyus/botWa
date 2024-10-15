@@ -1,0 +1,27 @@
+{
+  "name": "alya-x9",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "pm2 start index.js --name pairing-baileys --max-memory-restart 8G -- --max-old-space-size=8192"
+  },
+  "keywords": [],
+  "author": "wiken",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.8",
+    "awesome-phonenumber": "^6.1.0",
+    "chalk": "^4.1.2",
+    "nodemon": "^3.1.7",
+    "cheerio": "^1.0.0-rc.12",
+    "figlet": "^1.7.0",
+    "fluent-ffmpeg": "^2.1.3",
+    "moment-timezone": "^0.5.45",
+    "node-webpmux": "^3.2.0",
+    "performance-now": "^2.1.0",
+    "qs": "^6.12.3",
+    "os": "^0.1.2"
+  }
+}

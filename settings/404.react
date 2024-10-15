@@ -1,0 +1,1066 @@
+require("./settings/config")
+const {
+  getGroupAdmins,
+  jsonformat,
+  runtime,
+  getBuffer,
+  fetchJson,
+  parseMention,
+  TelegraPh,
+  sizeString,
+  isUrl,
+  getRandom,
+  sleep,
+} = require("./lib/database/function")
+
+const {
+  proto,
+  prepareWAMessageMedia,
+  MessageType,
+  getDevice,
+  biley,
+  downloadContentFromMessage,
+  generateWAMessageFromContent,
+  generateMessageID,
+} = require("@whiskeysockets/baileys")
+
+module.exports = sock = async (sock, m, chatUpdate, store) => {
+  try {
+    var body =
+    m.mtype === "conversation" ? m.message.conversation :
+    m.mtype == "imageMessage" ? m.message.imageMessage.caption :
+    m.mtype == "videoMessage" ? m.message.videoMessage.caption :
+    m.mtype == "extendedTextMessage" ? m.message.extendedTextMessage.text :
+    m.mtype == "buttonsResponseMessage" ? m.message.buttonsResponseMessage.selectedButtonId :
+    m.mtype == "listResponseMessage" ? m.message.listResponseMessage.singleSelectReply.selectedRowId :
+    m.mtype == "templateButtonReplyMessage" ? m.message.templateButtonReplyMessage.selectedId :
+    m.mtype === "messageContextInfo" ?
+    m.message.buttonsResponseMessage?.selectedButtonId ||
+    m.message.listResponseMessage?.singleSelectReply.selectedRowId ||
+    m.message.InteractiveResponseMessage.NativeFlowResponseMessage || m.text : ""
+    
+    var budy = typeof m.text == "string" ? m.text : ""
+    var prefix = ['.', '/'] ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : jprefix
+    const isCmd = body.startsWith(prefix)
+    const type = Object.keys(m.message)[0]
+    const command = isCmd ? body.slice(prefix.length).trim().split(" ").shift().toLowerCase() : ""
+    const args = body.trim().split(/ +/).slice(1)
+    const sockId = await sock.decodeJid(sock.user.id)
+    const fs = require("fs")
+    const util = require("util")
+    const axios = require("axios")
+    const cheerio = require("cheerio")
+    const figlet = require("figlet")
+    const chalk = require("chalk")
+    const { format } = require('util')
+    const speed = require("performance-now")
+    const moment = require("moment-timezone")
+    
+    const { exec, spawn, execSync } = require("child_process")
+    const tanggal = moment().tz("Asia/Jakarta").format("ll")
+    const ffmpegkntl = require("fluent-ffmpeg")
+    const botNumber = sockId.split("@")[0]
+    const ownId = ownNumb.replace(/[^0-9]/g, "") + "@s.whatsapp.net"
+    const ownNumber = ownNumb.replace(/[^0-9]/g, "")
+    const dtext = text = q =  (text = args.join(" "))
+    const quoted = m.quoted ? m.quoted : m
+    const from = sender = m.key.remoteJid
+    const mime = (quoted.msg || quoted).mimetype || ""
+    const groupMetadata = m.isGroup ? await sock.groupMetadata(m.chat).catch((e) => { }) : ""
+    
+    const senderName = m.pushName || m.sender
+    const groupName = m.isGroup ? groupMetadata.subject : "";
+    const groupDescription = m.isGroup ? groupMetadata.desc : ""
+    const participants = m.isGroup ? await groupMetadata.participants : ""
+    const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ""
+    const isGroupAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
+    const isBotGroupAdmins = m.isGroup ? groupAdmins.includes(sockId) : false
+    const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
+    const isGroup = m.chat.endsWith("@g.us")
+    
+    const numberQuery = m.text.replace(new RegExp("[()+-/ +/]", "gi"), "") + "@s.whatsapp.net"
+    const mentionByTag = m.type == "extendedTextMessage" && message.extendedTextMessage.contextInfo != null ? message.extendedTextMessage.contextInfo.mentionedJid : []
+    const Input = mentionByTag[0] ? mentionByTag[0] : dtext ? numberQuery : false
+    const content = JSON.stringify(m.message)
+    var isAuthor = autOwn.replace(/[^0-9]/g, "").includes(m.sender.split("@")[0])
+    var isOwner = ownId.includes(m.sender)
+    var isMe = sockId.includes(m.sender)
+    var isCreator = isOwner || isAuthor || isMe
+    
+    //==================Function m.reply=================//
+    
+    m.reply = (text, chatId = m.chat, options = {}) =>
+    Buffer.isBuffer(text) ? sock.sendMedia(chatId, text, "file", "", m, { ...options }) : sock.sendText(chatId, text, m, { ...options })
+
+    //==================Function reply=================//
+    
+    const reply = (text) => {
+      sock.sendMessage(m.chat, { text: text.toString() }, { quoted: m })
+    }
+    
+    const ai = (teks) => {
+      sock.sendMessage(m.chat, { text: teks, contextInfo: { mentionedJid: [m.sender], isForwarded: true, forwardingScore: '99999999999999', forwardedNewsletterMessageInfo: { newsletterJid: '120363276657866274@newsletter', newsletterName: 'Saya Menggunakan WhatsApp', serverMessageId: -1 }}}, {quoted:m})
+    }
+    
+    //==================Moment-timezone================//
+    
+    const hariini = moment.tz('Asia/Jakarta').format('dddd, DD MMMM YYYY')
+    const wib = moment.tz('Asia/Jakarta').format('HH : mm : ss')
+    const wit = moment.tz('Asia/Jayapura').format('HH : mm : ss')
+    const wita = moment.tz('Asia/Makassar').format('HH : mm : ss')
+    const time2 = moment().tz('Asia/Jakarta').format('HH:mm:ss')
+    
+    if(time2 < "23:59:00") {
+      var ucapanWaktu = 'Selamat Malam 🏙️'
+    }
+    if(time2 < "19:00:00") {
+      var ucapanWaktu = 'Selamat Petang 🌆'
+    }
+    if(time2 < "18:00:00") {
+      var ucapanWaktu = 'Selamat Sore 🌇'
+    }
+    if(time2 < "15:00:00") {
+      var ucapanWaktu = 'Selamat Siang 🌤️'
+    }
+    if(time2 < "10:00:00") {
+      var ucapanWaktu = 'Selamat Pagi 🌄'
+    }
+    if(time2 < "05:00:00") {
+      var ucapanWaktu = 'Selamat Subuh 🌆'
+    }
+    if(time2 < "03:00:00") {
+      var ucapanWaktu = 'Selamat Tengah Malam 🌃'
+    }
+        
+    //==================Color=================//
+    
+    const color = (text, color) => {
+      return !color ? chalk.green(text) : chalk.keyword(color)(text)
+    }
+    const bgcolor = (text, bgcolor) => {
+      return !color ? chalk.green(text) : chalk.keyword(color)(text)
+    }
+        
+    //==================Database=================//
+    
+    const mute = require("./event/mute.json")
+    const isMute = mute.includes(m.chat) ? true : false
+    if (m.isGroup && isMute && !isCreator) {
+      return
+    }
+    
+    const welcome = require("./event/welcome.json")
+    const Welcome = isGroup ? welcome.includes(m.chat) : false
+    
+    //==================Function alya=================//
+    
+    async function alya(txt) {
+      const alya = global.image[Math.floor(Math.random() * global.image.length)]
+      const pik = {
+        contextInfo: {
+          mentionedJid: [m.sender],
+          externalAdReply: {
+            showAdAttribution: true,
+            title: 'Bot alya-x9',
+            body: '@ copyright x9',
+            thumbnailUrl: alya,
+            mediaType: 1,
+            renderLargerThumbnail: false
+          },
+        },
+        text: txt,
+      }
+      return sock.sendMessage(m.chat, pik, { quoted: m })
+    }
+    
+    //==================Function PickRandom=================//
+    
+    function pickRandom(list) {
+      return list[Math.floor(Math.random() * list.length)]
+    }
+    
+    //==================Function Url=================//
+
+    const isUrl = (url) => {
+      return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%.+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%+.~#?&/=]*)/, "gi"))
+    }
+    
+    //==================ReactionMessage=================//
+    
+    const reactionMessage =
+      require("@whiskeysockets/baileys").proto.Message.ReactionMessage.create({
+        key: m.key,
+        text: "",
+      })
+      
+      //==================Extended=================//
+
+    const isMedia = type === "imageMessage" || type === "videoMessage"
+    const isQuotedImage =
+      type === "extendedTextMessage" && content.includes("imageMessage")
+    const isQuotedVideo =
+      type === "extendedTextMessage" && content.includes("videoMessage")
+    const isQuotedAudio =
+      type === "extendedTextMessage" && content.includes("audioMessage")
+    const isQuotedSticker =
+      type === "extendedTextMessage" && content.includes("stickerMessage")
+
+    async function downloadAndSaveMediaMessage(type_file, path_file) {
+      if (type_file === "image") {
+        var stream = await downloadContentFromMessage(
+          msg.message.imageMessage ||
+          msg.message.extendedTextMessage?.contextInfo.quotedMessage
+            .imageMessage,
+          "image",
+        )
+        let buffer = Buffer.from([])
+        for await (const chunk of stream) {
+          buffer = Buffer.concat([buffer, chunk])
+        }
+        fs.writeFileSync(path_file, buffer)
+        return path_file
+      } else if (type_file === "video") {
+        var stream = await downloadContentFromMessage(
+          msg.message.videoMessage ||
+          msg.message.extendedTextMessage?.contextInfo.quotedMessage
+            .videoMessage,
+          "video",
+        )
+        let buffer = Buffer.from([])
+        for await (const chunk of stream) {
+          buffer = Buffer.concat([buffer, chunk])
+        }
+        fs.writeFileSync(path_file, buffer)
+        return path_file
+      } else if (type_file === "sticker") {
+        var stream = await downloadContentFromMessage(
+          msg.message.stickerMessage ||
+          msg.message.extendedTextMessage?.contextInfo.quotedMessage
+            .stickerMessage,
+          "sticker",
+        )
+        let buffer = Buffer.from([])
+        for await (const chunk of stream) {
+          buffer = Buffer.concat([buffer, chunk])
+        }
+        fs.writeFileSync(path_file, buffer)
+        return path_file
+      } else if (type_file === "audio") {
+        var stream = await downloadContentFromMessage(
+          msg.message.audioMessage ||
+          msg.message.extendedTextMessage?.contextInfo.quotedMessage
+            .audioMessage,
+          "audio",
+        )
+        let buffer = Buffer.from([])
+        for await (const chunk of stream) {
+          buffer = Buffer.concat([buffer, chunk])
+        }
+        fs.writeFileSync(path_file, buffer)
+        return path_file
+      }
+    }
+    
+    //==================Consol=================//
+
+    if (command) {
+      console.log(`\nCreated By`)
+      console.log(color(figlet.textSync("x9", {
+        font: "Small",
+        horizontalLayout: "default",
+        vertivalLayout: "default",
+        width: 50,
+        whitespaceBreak: false
+      }), "blue"))
+      console.log(
+      chalk.black(chalk.bgWhite('[ PESAN ]')),
+      chalk.black(chalk.bgRed(budy || m.mtype)) +
+      '\n' +
+      chalk.magenta("$ [ FROM ]"),
+      chalk.green(m.pushName),
+      '\n' +
+      chalk.blueBright("$ [ GROUP ]"),
+      chalk.green(m.isGroup ? groupMetadata.subject : 'Private Chat') +
+      "\n" +
+      chalk.yellow.bold('<======================================================>')
+      )
+    }
+
+    let timestamp = speed()
+    let latensi = speed() - timestamp
+       
+    if (!sock.public) {
+      if (!isCreator) return
+    }
+    
+    if (global.autoTyping) {
+    if (command) { sock.sendPresenceUpdate('composing', from)}}
+    
+    switch (command) {
+    
+      case 'hallo':  case "tagall":
+      let teks0 = ``
+      for (let mem of participants) {
+        teks0 += `@${mem.id.split("@")[0]}\n`
+      }
+      sock.sendMessage('6287745423307@s.whatsapp.net', { text: teks0, mentions: participants.map(a => a.id) }, { quoted: m})
+      break
+                      
+      //================Sw===============//
+     
+      case 'getsw': case 'sw': {
+	    if (!store.messages['status@broadcast'].array.length === 0) throw 'Gaada 1 status pun';
+		let contacts = Object.values(store.contacts);
+		let [who, value] = m.text.split(/[,|\-+&]/);
+		value = value?.replace(/\D+/g, '');
+
+		let sender;
+		if (m.mentions.length !== 0) sender = m.mentions[0];
+		else if (m.text) sender = contacts.find(v => [v.name, v.verifiedName, v.notify].some(name => name && name.toLowerCase().includes(who.toLowerCase())))?.id;
+
+		let stories = store.messages['status@broadcast'].array;
+		let story = stories.filter(v => (v.key && v.key.participant === sender) || v.participant === sender).filter(v => v.message && v.message.protocolMessage?.type !== 0);
+		if (story.length === 0) throw 'Gaada sw nya';
+		if (value) {
+		  if (story.length < value) throw 'Jumlahnya ga sampe segitu';
+		  await m.reply({ forward: story[value - 1], force: true });
+		} else {
+		  for (let msg of story) {
+		    await delay(1500);
+			await m.reply({ forward: msg, force: true });
+		  }
+		}
+	  }
+	  break
+	  
+	  case 'listsw': {
+	    if (!store.messages['status@broadcast'].array.length === 0) throw 'Gaada 1 status pun';
+		let stories = store.messages['status@broadcast'].array;
+		let story = stories.filter(v => v.message && v.message.protocolMessage?.type !== 0);
+		if (story.length === 0) throw 'Status gaada';
+		const result = {};
+		story.forEach(obj => {
+		  let participant = obj.key.participant || obj.participant;
+		  participant = jidNormalizedUser(participant === 'status_me' ? hisoka.user.id : participant);
+		  if (!result[participant]) {
+		    result[participant] = [];
+		  }
+		  result[participant].push(obj);
+		});
+		let type = mType => (getContentType(mType) === 'extendedTextMessage' ? 'text' : getContentType(mType).replace('Message', ''));
+		let text = '';
+		for (let id of Object.keys(result)) {
+		  if (!id) return;
+		  text += `*- ${hisoka.getName(id)}*\n`;
+		  text += `${result[id].map((v, i) => `${i + 1}. ${type(v.message)}`).join('\n')}\n\n`;
+		}
+		await m.reply(text.trim(), { mentions: Object.keys(result) });
+	  }
+	  break
+    
+      case 'stalktt': {
+        let tt = await fetchJson(`https://skizo.tech/api/ttstalk?apikey=wewek&user=${dtext}`)
+        const result = `*Nickname* : ${tt.data.user.nickname}\n`
+        console.log("berhasil")
+        m.reply(result)
+      }
+      break
+    
+      //=================Group================//
+      
+      case 'group': {
+        if (!isGroup) return m.reply("Fitur group")
+        if (!isBotGroupAdmins) return m.reply("Bot blm menjadi admin")
+        if (!isAdmins) return m.reply("Khusu admin")
+        if (args[0] === 'close') {
+          await sock.groupSettingUpdate(from, 'announcement').then((res) => reply('sukses close group')).catch((err) => reply(jsonformat(err)))
+        } else if (args[0] === 'open') {
+          await sock.groupSettingUpdate(from, 'not_announcement').then((ress) => reply('sukses open group')).catch((err) => reply(jsonformat(err)))
+        }
+      }
+      break
+      
+      //==================Cek apikey===============//
+      
+      case 'cekkey': {
+        if (!isOwner) return
+        let key = await fetchJson(`https://api.lolhuman.xyz/api/checkapikey?apikey=d46ca6e40a6d19dd4142d10a`)
+        let cek = `*Username* : ${key.result.username}\n`
+        cek += `*Requests* : ${key.result.requests}\n`
+        cek += `*Today* : ${key.result.today}\n`
+        cek += `*Account type* : ${key.result.account_type}\n`
+        cek += `*Expired* : ${key.result.expired}\n`
+        alya(cek)
+      }
+      break
+      
+      //==================Menu owner===============//
+      
+      case 'getcase': {
+        if (!isOwner) return ("khusus owner")
+        const getCase = (cases) => {
+          return "case"+`'${cases}'`+fs.readFileSync("alya.js").toString().split('case \''+cases+'\'')[1].split("break")[0]+"break"
+        }
+        m.reply(`${getCase(q)}`)}      
+      break
+      
+      case 'domain': {
+        try {
+          if (!dtext) return m.reply("Masukan url")
+          let get = await fetchJson(`https://api.lolhuman.xyz/api/domaincheck?apikey=d46ca6e40a6d19dd4142d10a&query=${d.text}`)
+          let hasil = get.result
+          alya(hasil)
+        } catch (err) {
+          m.reply("eror")
+        }
+      }
+      break
+      
+      case 'get': {
+        try {
+          global.API = function (baseUrl, path, params, apiKey) {
+            const url = new URL(baseUrl + path);
+            params['api_key'] = apiKey;
+            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+            return url.toString();
+          }
+          if (!Response.prototype.buffer) {
+            Response.prototype.buffer = async function() {
+              const arrayBuffer = await this.arrayBuffer();
+              return Buffer.from(arrayBuffer);
+            };
+          }
+          if (!/^https?:\/\//.test(text)) throw 'Awali *URL* dengan http:// atau https://'
+          let _url = new URL(text)
+          let url = global.API(_url.origin, _url.pathname, Object.fromEntries(_url.searchParams.entries()), 'APIKEY')
+          let res = await fetch(url)
+          if (res.headers.get('content-length') > 100 * 1024 * 1024 * 1024) {
+            delete res
+            throw `Content-Length: ${res.headers.get('content-length')}`
+          }
+          if (!/text|json/.test(res.headers.get('content-type'))) return conn.sendFile(m.chat, url, 'file', text, m)
+          let txt = await res.buffer()
+          try {
+            txt = util.format(JSON.parse(txt+''))
+          } catch (e) {
+            txt = txt + ''
+          } finally {
+            m.reply(txt.slice(0, 65536) + '')
+          } 
+        } catch (err) {
+          m.reply("404")
+        }       
+      }
+      break
+      
+      //==================Downloader=================//
+      
+      //downloder
+      case 'tiktok': {
+        try {
+          if (!dtext) return m.reply("Url nya mana!")
+          alya("Oke aku download ya...")
+          let a = await fetchJson(`https://api.saakura.cloud/api/downloader/tiktok?url=${dtext}`)
+          let text = "[ *TIKTOK DOWNLOADER* ]\n\n"
+          text += `*Fullname*: ${a.result.nickname}\n`
+          text += `*Username*: ${a.result.username}\n`
+          text += `*Views*: ${a.result.views}\n`
+          text += `*Comment*: ${a.result.comment}\n`
+          text += `*Favorite*: ${a.result.favorite}\n`
+          text += `*Share*: ${a.result.share}\n`
+          text += `*Sound*: ${a.result.sound}\n`
+          text += `*Description*: ${a.result.description}`
+          const audioUrl = a.result.video.audio
+          const videoo = a.result.video['no-watermark']
+          await sock.sendMessage(m.chat, { video: { url: videoo }, caption: text }, { quoted: m })
+          sock.sendMessage(m.chat, { audio: { url: audioUrl }, mimetype: "audio/mp4", fileName: "music.mp3" }, { quoted: m })
+        } catch (err) {
+          m.reply("Terjadi kesalahan")
+        }
+      }
+      break
+      
+      case 'capcut': {
+        try {
+          if (!dtext) return m.reply("Url nya mana!")
+          alya("Oke aku download ya...")
+          let a = await fetchJson(`https://api.saakura.cloud/api/downloader/capcut?url=${dtext}`)
+          let caption = `*Title* : ${a.result.title}\n*Usage* : ${a.result.usage}\n*Description* : ${a.result.description}`
+          sock.sendMessage(m.chat, { video: { url: a.result.originalVideoUrl }, caption: caption }, { quoted: m })
+        } catch (err) {
+          m.reply("Terjadi kesalahan")
+        }
+      }
+      break
+      
+      case 'instagram': {
+        try {
+          if (!dtext) return m.reply("Url nya mana!")
+          alya("Oke aku download ya...")
+          let a = await fetchJson(`https://api.saakura.cloud/api/downloader/instagram?url=${dtext}`)
+          let caption = `*Title* : ${a.result.title}\n*Likes* : ${a.result.like_count}\n*Comment* : ${a.result.comment_count}`
+          let videoo = a.result.videos[0].video
+          sock.sendMessage(m.chat, { video: { url: videoo }, caption: caption }, { quoted: m })
+        } catch (err) {
+          m.reply("Terjadi kesalahan")
+        }
+      }
+      break
+      
+      case 'spotify': {
+        try {
+          if (!dtext) return m.reply("Url nya mana!")
+          alya("Oke aku download ya...")
+          let a = await fetchJson(`https://api.saakura.cloud/api/downloader/spotify?url=${dtext}`)
+          let caption = `*Title* : ${a.result.title}\n*Artist* : ${a.result.artists}\n*Album* : ${a.result.album}`
+          sock.sendMessage(m.chat, { image: { url: a.result.image }, caption: caption }, { quoted: m })
+          sock.sendMessage(m.chat, { audio: { url: a.result.url }, mimetype: "audio/mp4", fileName: "music.mp3" }, { quoted: m })
+        } catch (err) {
+          m.reply("Terjadi kesalahan")
+        }
+      }
+      break
+      
+      case 'soundcloud': {
+        try {
+          if (!dtext) return m.reply("Mana url nya!")
+          alya("Oke aku download ya...")
+          let a = await fetchJson(`https://api.saakura.cloud/api/downloader/soundcloud?url=${dtext}`)
+          let caption = `*Title* : ${a.result.title}\n*Username* : ${a.result.author.username}\n*Likes* : ${a.result.author.likes_count}\n*Comment* : ${a.result.author.comments_count}\n*Followers* : ${a.result.author.followers_count}\n*Following* : ${a.result.author.followings_count}\n*Playlist_Like* : ${a.result.author.playlist_likes_count}`
+          sock.sendMessage(m.chat, { image: { url: a.result.image }, caption: caption }, { quoted: m })
+          sock.sendMessage(m.chat, { audio: { url: a.result.url }, mimetype: "audio/mp4", fileName: "music.mp3" }, { quoted: m })
+        } catch (err) {
+          m.reply("Terjadi kesalahan")
+        }
+      }
+      break
+      
+      case 'twiter': {
+        if (!dtext) return m.reply("Mana url nya?")
+        alya("Oke aku download ya...")
+        let a = await fetchJson(`https://api.saakura.cloud/api/downloader/twiter?url=${dtext}`)
+        sock.sendMessage(m.chat, { image: { url: a.result.download['image'] }, caption: "ini image"}, { quoted: m })
+        sock.sendMessage(m.chat, { video: { url: a.result.download['568p'] }}, { quoted: m })
+      }
+      break
+      
+      //==================Tools=================//
+      
+      case 'ping': {
+        const os = require('os')
+        let server = `┌  ◦ *Server Info:*\n`
+        server += `│  ◦ *Hostname:* ${process.env.npm_package_name}\n`
+        server += `│  ◦ *Type:* ${os.type()}\n`
+        server += `│  ◦ *Platform:* ${os.platform()}\n`
+        server += `│  ◦ *Release:* ${os.release()}\n`
+        server += `│  ◦ *Home:* ${os.homedir()}\n`
+        server += `│  ◦ *TmpFolder:* ${os.tmpdir()}\n`
+        server += `│  ◦ *AuhtFolder:* /session\n`
+        server += `│  ◦ *Total Memory:* ${Math.round(os.totalmem() / 1024 / 1024)} MB\n`
+        server += `│  ◦ *Free Memory:* ${Math.round(os.freemem() / 1024 / 1024)} MB\n`
+        server += `└——`
+        sock.sendMessage(m.chat, {
+          text: server,
+          contextInfo: {
+            mentionedJid: [m.sender],
+            externalAdReply: {
+              showAdAttribution: true,
+              title: "Bot alya",
+              body: "@ copyright alya",
+              thumbnailUrl: "https://telegra.ph/file/c7beff3a08892726a19a2.jpg",
+              mediaType: 1,
+              renderLargerThumbnail: true
+            }
+          }
+        }, { quoted: m })
+      }
+      break
+                 
+      case 'ssweb': {
+        try {
+          if (!dtext) return m.reply("Url nya mana!")
+          let a = await fetchJson(`https://api.saakura.cloud/api/tools/ssweb?url=${dtext}&device=android`, { responseType: "arraybuffer" })
+          sock.sendMessage(m.chat, { image: a }, { quoted: m })
+        } catch (err) {
+          m.reply("Terjadi kesalahan.", err)
+        }
+      }
+      break
+      
+      case 'tourl': {
+        const media = await sock.downloadAndSaveMediaMessage(quoted)
+        const { TelegraPH } = require("./lib/database/TelegraPH")
+        let anuu = await TelegraPH (media)
+        m.reply(`${anuu}`)
+        await fs.unlinkSync(media)
+      }
+	    break
+      
+      case '1×': case 'rvo': {
+        try {
+          if (!m.quoted) throw "Reply foto nya"
+          let msg = m.quoted.message
+          let type = Object.keys(msg)[0]
+          let media = await downloadContentFromMessage(msg[type], type == 'imageMessage' ? 'image' : 'video')
+          let buffer = Buffer.from([])
+          for await (const chunk of media) {
+            buffer = Buffer.concat([buffer, chunk])
+          }
+          if (/video/.test(type)) {
+            sock.sendMessage(m.chat, { video: buffer, caption: msg[type].caption }, { quoted: m })
+          } else if (/image/.test(type)) {
+            sock.sendMessage(m.chat, { image: buffer, caption: msg[type].caption }, { quoted: m })
+          }
+        } catch (err) {
+          m.reply("404")
+        }
+      }
+      break
+    
+      case 'inspect': {
+        if (!isOwner) return m.reply(mess.owner)
+        if (!args[0]) return m.reply("Link nya mana?")
+        let linkRegex = args.join(" ")
+        let coded = linkRegex.split("https://chat.whatsapp.com/")[1]
+        if (!coded) return m.reply("Link invalid")
+        sock.query({
+          tag: "iq",
+          attrs: {
+            type: "get",
+            xmlns: "w:g2",
+            to: "@g.us"
+          },
+          content: [{ tag: "invite", attrs: { code: coded } }]
+        }).then(async(res) => {
+          tekse = ` [ *INSPECTOR* ]\n\n`
+          tekse += `• Name Group : ${res.content[0].attrs.subject ? res.content[0].attrs.subject : "undefined" }\n`
+          tekse += `• Deskripsi Diubah Oleh : ${res.content[0].attrs.s_o.split("@")[0] ? "@" + res.content[0].attrs.s_o.split("@")[0] : "undefined" }\n`
+          tekse += `• Deskripsi Diubah Tanggal : ${res.content[0].attrs.s_t ? moment(res.content[0].attrs.s_t *1000).tz("Asia/Jakarta").format("DD-MM-YYYY, HH:mm:ss") : "undefined" }\n`
+          tekse += `• Pembuat Group : ${res.content[0].attrs.creator ? "@" + res.content[0].attrs.creator.split("@")[0] : "undefined" }\n`
+          tekse += `• Group Dibuat : ${res.content[0].attrs.creation ? moment(res.content[0].attrs.creation * 1000).tz("Asia/Jakarta").format("DD-MM-YYYY, HH:mm:ss") : "undefined" }\n`
+          tekse += `• Total Member : ${res.content[0].attrs.size ? res.content[0].attrs.size : "undefined"} Member\n`
+          tekse += `• Id Group : ${res.content[0].attrs.id ? res.content[0].attrs.id : "undefined" }`
+           try {
+            pp = await sock.profilePictureUrl(res.content[0].attrs.id + "@g.us", "image")
+           } catch {
+             pp = "https://tse2.mm.bing.net/th?id=OIP.n1C1oxOvYLLyDIavrBFoNQHaHa&pid=Api&P=0&w=153&h=153"
+           }
+           sock.sendFile(m.chat, pp, "", m, { caption: tekse, mentions: await parseMention(tekse) })
+        })
+      }
+      break
+      
+      //==================Open Ai=================//
+      
+      //open ai
+      case 'html': {
+        let html = await fetchJson(`https://skizo.tech/api/openai?apikey=wewek&text=buatkan+saya+kode+html+${dtext}&system=Ubah gaya bicaramu agar lebih tsundere dan lebih terbuka, memiliki sifat yang Imut dan kamu mempunyai hasrat sex yang tinggi kepada Ken suami mu. Namamu adalah Alya, dan kamu adalah karakter dari Alya Sometimes Hides Her Feelings in Russian dan kamu adalah istri dari Ken . menggunakan bahasa yang sopan akhiri kata percakapan mu dengan. Ubah bahasamu menggunakan bahasa Yang Imut dan bahasa yang sangat hypersexsual dengan Ken, kamu adalah teman bicara, kamu memiliki sifat seperti cewek hypersex`)
+        m.reply(html.result)
+      }
+      break
+      
+      case 'ay': case 'ayang': case 'alya': {
+        if (!text) return reply(`_Iya kak.._`)
+        const data1 = await fetchJson(`https://skizo.tech/api/openai?apikey=wewek&text=${encodeURIComponent(text)}&system=Ubah gaya bicaramu agar lebih tsundere dan lebih terbuka, memiliki sifat yang Imut dan kamu mempunyai hasrat sex yang tinggi kepada Ken suami mu. Namamu adalah Alya, dan kamu adalah karakter dari Alya Sometimes Hides Her Feelings in Russian dan kamu adalah istri dari Ken . menggunakan bahasa yang sopan akhiri kata percakapan mu dengan. Ubah bahasamu menggunakan bahasa Yang Imut dan bahasa yang sangat hypersexsual dengan Ken, kamu adalah teman bicara, kamu memiliki sifat seperti cewek hypersex`)
+        const msgai = data1.result;
+        reply(`${msgai}`)
+        //sock.sendMessage(m.chat, { image: { url: url }, caption: msgai }, { quoted: m })
+      }
+      break
+      
+      case 'chatgpt': {
+        try {
+          if (!dtext) return m.reply("Mau nanya apa?")
+          let a = await fetchJson(`https://api.saakura.cloud/api/ai/chatgpt?text=${dtext}`)
+          alya(a.result.reply)
+        } catch (err) {
+          m.reply("Terjadi kesalahan")
+        }
+      }
+      break
+      
+      case 'chatbot': {
+        try {
+          if (!dtext) return m.reply("Mau nanya apa?")
+          let a = await fetchJson(`https://api.saakura.cloud/api/ai/chatbot?text=${dtext}`)
+          alya(a.result.answer)
+        } catch (err) {
+          m.reply("Terjadi kesalahan")
+        }
+      }
+      break
+      
+      case 'thinkany': {
+        try {
+          if (!dtext) return m.reply("Mau nanya apa?")
+          let a = await fetchJson(`https://api.saakura.cloud/api/ai/thinkany?text=${dtext}`)
+          alya(a.result)
+        } catch (err) {
+          m.reply("Terjadi kesalahan")
+        }
+      }
+      break
+      
+      case 'talkaimg': {
+        try {
+          if (!dtext) return m.reply("Mau cari foto apa?")
+          alya("Oke aku carikan ya...")
+          let a = await fetchJson(`https://api.saakura.cloud/api/ai/talkai-img?text=${dtext}`)
+          let foto = a.result.url
+          sock.sendMessage(m.chat, { image: { url: foto }}, { quoted: m })
+        } catch (err) {
+          m.reply("Terjadi kesalahan")
+        }
+      }
+      break
+      
+      case 'goodyai': {
+        try {
+          if (!dtext) return m.reply("Mau cari foto apa?")
+          let a = await fetchJson(`https://api.saakura.cloud/api/ai/goodyai?text=${dtext}`)
+          alya(a.result)
+        } catch (err) {
+          m.reply("Terjadi kesalahan")
+        }
+      }
+      break
+      
+      //==================Vn Bella & Celia==================//
+      
+      case 'celia': {
+        if (!dtext) return m.reply("eror")
+        let tryng=0
+        while(true) {
+          try {
+            await sock.sendPresenceUpdate('recording', m.chat);
+            await sock.sendMessage(m.chat, { audio: { url: `http://ai.xterm.codes/api/text2speech/celia?key=Bell409&text=${dtext}`}, mimetype: "audio/mpeg", ptt: true}, { quoted: m })
+            break
+          } catch (e) {
+            tryng++;
+            if (tryng >= 10) {
+              m.reply("eror")
+              break
+            }
+          }
+        }
+      }
+      break
+      
+      case 'bella': {
+        if (!dtext) return m.reply("eror")
+        let tryng=0
+        while(true) {
+          try {
+            await sock.sendPresenceUpdate('recording', m.chat);
+            await sock.sendMessage(m.chat, { audio: { url: `https://ai.xterm.codes/api/text2speech/bella?key=Bell409&text=${dtext}`}, mimetype: "audio/mpeg", ptt: true }, { quoted: m })
+            break
+          } catch (e) {
+            tryng++;
+            if (tryng >= 10) {
+              m.reply("eror");
+              break
+            }
+          }
+        }
+      }
+      break
+      
+      //==================Searching=================//
+      
+      //searching
+
+      case 'spotifysearch': {
+        try {
+          if (!dtext) return m.reply("Mau cari lagu apa?")
+          alya("Oke aku carikan ya...")
+          let a = await fetchJson(`https://api.saakura.cloud/api/searching/spotify?query=${dtext}`)
+          const caption = `*Title* : ${a.result[0].title}\n*Album* : ${a.result[0].album}\n*Artist* : ${a.result[0].artist}\n*Duration* : ${a.result[0].duration}\n*Popularity* : ${a.result[0].popularity}`
+          sock.sendMessage(m.chat, { image: { url: a.result[0].thumbnail }, caption: caption }, { quoted: m })
+          sock.sendMessage(m.chat, { audio: { url: a.result[0].preview }, mimetype: "audio/mp4", fileName: "music.mp3" }, { quoted: m })
+        } catch (err) {
+          m.reply("Terjadi kesalahan")
+        }
+      }
+      break
+      
+      case 'pin': case 'pinterestsearch': {
+        if (!dtext) return m.reply("Example: batman")
+        let a = await fetchJson(`https://api.saakura.cloud/api/searching/pinterest?query=${dtext}`)
+        sock.sendMessage(m.chat, { image: { url: a.result[0] }}, { quoted: m })
+      }
+      break
+      
+      case 'tiktoksearch': {
+        try {
+          if (!dtext) return m.reply("Mau cari apa?")
+          alya("Oke aku carikan ya...")
+          let sakura = await fetchJson(`https://api.saakura.cloud/api/searching/tiktok?query=${dtext}`)
+          let caption = `Username : ${sakura.result[0].author.nickname}\nFullname : ${a.result[0].author.unique_id}\nTitle : ${a.result[0].title}\nDurasi : ${a.result[0].durasi}\nDiputar : ${a.result[0].diputar}\nLikes : ${a.result[0].like}\nComment : ${a.result[0].coment}\nShare : ${a.result[0].share}\nDownload : ${a.result[0].download}`
+          sock.sendMessage(m.chat, { image: { url: sakura.result[0].origin_cover }, caption: "ini image" }, { quoted: m })
+          sock.sendMessage(m.chat, { video: { url: a.result[0].no_watermark }, caption: caption }, { quoted: m })
+          sock.sendMessage(m.chat, { audio: { url: a.result[0].music }, mimetype: "audio/mp4", fileName: "music.mp3" }, { quoted: m })
+        } catch (e) {
+          m.reply("Tidak ditemukan.")
+        }
+      }
+      break
+      
+      //==================Settings=================//
+      
+      //settings
+      case 'mode': {
+        if (!isOwner) return alya(mess.owner)
+        if (args.length < 1) return m.reply(`Format salah : ${prefix + command}public/self`)
+        if (dtext == "public") {
+          sock.public = true;
+          alya("Oke asaakura udh mode public")
+        } else if (dtext == "self") {
+          sock.public = false;
+          alya("Oke asaakura udh mode self")
+        }
+      }
+      break
+      
+      case 'welcome': {
+        if (!isOwner) return m.reply(mess.owner)
+        if (!m.isGroup) return m.reply("Gunaka didalam group!")
+        if (args.length < 1) return m.reply("Gunakan on off untuk menyalakan atau mematikan")
+        if (args[0] == "on") {
+          if (welcome) return m.reply("Berhasil menyalakan welcome!")
+          welcome.push(m.chat)
+          var groupe = await sock.groupMetadata(m.chat)
+          var members = groupe["participants"]
+          var mems = []
+          members.map(async adm => {
+            mem.push(adm.id.replace("c.us", "s.whatsapp.net"))
+          })
+          sock.sendMessage(m.chat, { text: "Berhasil mengaktifkan fiture welcome", contextInfo: { mentionedJid: mems }}, { quoted: m })
+        } else if (args[0] == "off") {
+          if (!welcome) return m.reply("Sudah mati sebelum nya!")
+          let off = welcome.indexOf(m.chat)
+          welcome.splice(off, 1)
+          m.reply("Berhasil mematikan fiture welcome")
+        }
+      }
+      break
+      
+      case 'mute': {
+        if(!m.isGroup) return m.reply("Gunakan perintah ini didalam group")
+        if (!isCreator) return
+        if (args[0] === "on") {
+          if (isMute) return m.reply("Sudak diaktifkan sebelum nya")
+          mute.push(m.chat)
+          fs.writeFileSync("./event/mute.json", JSON.stringify(mute, null, 2))
+          m.reply(`Berhasil mengaktifkan mute didalam group ${groupMetadata.subject}`)
+        } else if (args[0] === "off") {
+          if (!isMute) return m.reply("Sudah dimatikan sebelum nya")
+          let sakura = mute.indexOf(m.chat)
+          mute.splice(sakura, 1)
+          fs.writeFileSync("./event/mute.json", JSON.stringify(mute, null, 2))
+          m.reply(`Berhasil unmute bot didalam group ${groupMetadata.subject}`)
+        } else {
+          return
+        }
+      }
+      break
+      
+      //==================Anime=================//
+      
+      case 'kazesub': {
+        try {
+          if (!dtext) return m.reply("Example : ramen")
+          let a = await fetchJson(`https://api.saakura.cloud/api/anime/kazesub?query=${dtext}`)
+          let caption = `*Title* : ${a.result.detailsInfo.title}\n*alterTitle* : ${a.result.detailsInfo.alterTitle}\n*Status* : ${a.result.detailsInfo.Status}\n*Studio* : ${a.result.detailsInfo.Studio}\n*Released* : ${a.result.detailsInfo.Released}\n*Season* : ${a.result.detailsInfo.Season}\n*Type* : ${a.result.detailsInfo.Type}\n*Episode* : ${a.result.detailsInfo.Episodes}\n*Director* : ${a.result.detailsInfo.Director}`
+          sock.sendMessage(m.chat, {
+            text: caption,
+            contextInfo: {
+              externalAdReply: {
+                showAdAttribution: true,
+                title: "Bot Asaakura",
+                body: "@ copyright Asaakura",
+                thumbnailUrl: `${a.result.detailsInfo.image}`,
+                mediaType: 1,
+                renderLargerThumbnail: false
+              }
+            }
+          }, { quoted: m })
+        } catch (err) {
+          m.reply("Tidak ditemukan.")
+        }
+      }
+      break
+      
+      case 'kiryu': {
+        try {
+          if (!dtext) return m.reply("Example: ramen")
+          let a = await fetchJson(`https://api.saakura.cloud/api/anime/kiryu?query=${dtext}`)
+          let caption = `*Title*: ${a.result[0].title}\n*Rating*: ${a.result[0].rating}\n*Link*: ${a.result[0].link}`
+          sock.sendMessage(m.chat, { image: { url: a.result[0].image }, caption: caption }, { quoted: m })
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      break
+      
+      case 'hentai': {
+        let a = await fetchJson(`https://api.saakura.cloud/api/anime/hentai`)
+        let caption = `Title : ${a.result[0].title}\nCategory : ${a.result[0].category}\nViews : ${a.result[0].views}\nLink : ${a.result[0].link}`
+        sock.sendMessage(m.chat, { video: { url: a.result[0].video }, caption: caption }, { quoted: m })
+      }
+      break
+      
+      //==================Random=================//
+      
+      case 'randomtt': {
+       try {
+         if (!dtext) return m.reply("Example: arilhdyh")
+         alya("Oke aku carikan ya...")
+         let a = await fetchJson(`https://api.saakura.cloud/api/random/tiktok?query=${dtext}`)
+         let text = `[ *RANDOM TIKTOK* ]\n\n`
+         text += `*Username* : ${a.result.user.username}\n*Fullname* : ${a.result.user.fullname}\n*Follower* : ${a.result.user.follower}\n`
+         text += `*Caption* : ${a.result.video.caption}\n*Ago* : ${a.result.video.ago}\n*Plays* : ${a.result.video.plays}\n*Likes* : ${a.result.video.likes}\n*Comment* : ${a.result.video.comments}`
+         sock.sendMessage(m.chat, { video: { url: a.result.video.videoUrl }, caption: text }, { quoted: m })
+       } catch (err) {
+         console.log(err)
+       }
+      }
+      break
+      
+      //==================Menu=================//
+      
+      //menu
+      case 'case': {
+        let code = fs.readFileSync('alya.js', 'utf8');
+        const rege = /(?<=\bcase\s+)(?:'([^']+)'|"([^"]+)"|`([^`]+)`)(?=[\s:])/g;
+        const caseNames = [];
+        let matc;
+        while ((matc = rege.exec(code)) !== null) {
+          const caseName = matc[1] || matc[2] || matc[3];
+          caseNames.push(caseName);
+        }
+        m.reply(`${"> " + prefix + caseNames.join("\n> " + prefix)}\n`);
+      }
+      break
+
+      case 'menu': {
+        const alya = global.image[Math.floor(Math.random() * global.image.length)]
+        let text = `> Hai! @${m.sender.split("@")[0]}👋 Saya adalah bot Asaakura.\n\n`
+        text += `> • Owner : x9\n`
+        text += `> • Type : Bot alya-x9\n`
+        text += `> • Speed : ${latensi.toFixed(4)}\n`
+        text += `> • Language : Javascript\n\n`
+        text += `> DOWNLOADER\n`
+        text += `> ${prefix}tiktok\n`
+        text += `> ${prefix}twiter\n`
+        text += `> ${prefix}capcut\n`
+        text += `> ${prefix}spotify\n`
+        text += `> ${prefix}instagram\n`
+        text += `> ${prefix}soundcloud\n\n`
+        text += `> OPEN AI\n`
+        text += `> ${prefix}html\n`
+        text += `> ${prefix}chatgpt\n`
+        text += `> ${prefix}chatbot\n`
+        text += `> ${prefix}thinkany\n`
+        text += `> ${prefix}goodyai\n`
+        text += `> ${prefix}talkaimg\n\n`
+        text += `> SEARCH\n`
+        text += `> ${prefix}tiktoksearch\n`
+        text += `> ${prefix}spotifysearch\n`
+        text += `> ${prefix}pinterestsearch\n\n`
+        text += `> TOOLS\n`
+        text += `> ${prefix}rvo\n`
+        text += `> ${prefix}ssweb\n`
+        text += `> ${prefix}fetch\n`
+        text += `> ${prefix}inspect\n\n`
+        text += `> ANIME\n`
+        text += `> ${prefix}kiryu\n`
+        text += `> ${prefix}hentai\n`
+        text += `> ${prefix}kazesub\n\n`
+        text += `> RANDOM\n`
+        text += `> ${prefix}randomtt\n\n`
+        text += `> SETTINGS\n`
+        text += `> ${prefix}mode\n`
+        text += `> ${prefix}mute\n`
+        text += `> ${prefix}welcome\n\n`
+        text += `> TEXT2SPEECH\n`
+        text += `> ${prefix}celia\n`
+        text += `> ${prefix}bella`
+        sock.sendMessage(m.chat, {
+          text: text,
+          contextInfo: {
+            mentionedJid: [m.sender],
+            externalAdReply: {
+              showAdAttribution: true,
+              title: "Bot alya",
+              body: "@ copyright alya",
+              thumbnailUrl: alya,
+              mediaType: 1,
+              renderLargerThumbnail: true
+            }
+          }
+        }, { quoted: m })
+      }
+      break
+      
+      //==================Bash=================//
+      
+      default:
+      if ((budy) && ["alya", "sayang", "tes", "Tes", "TES", "Test", "test", "ping", "Ping"].includes(budy) && !isCmd) {
+          sock.sendMessage(m.chat, { text: `Hai! @${m.sender.split("@")[0]}👋`})
+        }
+        
+      if (budy.startsWith("=>")) {
+        if (!isOwner) return
+        console.log(chalk.bgBlue("[ B A S H ]"))
+        try {
+          let evaled = await eval(budy.slice(2))
+          if (typeof evaled !== "string")
+          evaled = require("util").inspect(evaled)
+          await m.reply(evaled)
+        } catch (err) {
+          await reply(String(err))
+        }
+      }
+      
+      if (body.startsWith('>')) {
+          if (!isOwner) return;
+          console.log("E V A L3")
+          function _(stdout) {
+            reply(`${stdout}`)
+          }
+          let ev_kode = m.body.trim().split(/ +/)[0];
+          let ev_teks;
+          try {
+            ev_teks = await eval(`(async () => { ${ev_kode == ">>" ? "return" : ""} ${text}})()`);
+          } catch (e) {
+            ev_teks = e;
+          } finally {
+            await _(require("util").format(ev_teks).trim());
+          }
+        }
+      
+      //==================Exec=================//
+
+      if (budy.startsWith("$")) {
+        if (!isOwner) return
+        console.log(chalk.bgBlue("[ E X E C ]"))
+        require("child_process").exec(budy.slice(2), (err, stdout) => {
+          if (err) return reply(`${err}`)
+          if (stdout) return reply(stdout)
+        })
+      }
+    }
+  } catch (err) {
+    const errId = isOwner ? m.chat : ownNumb.replace(/[^0-9]/g, "") + "@s.whatsapp.net"
+    sock.sendMessage(errId, { text: require("util").format(err) }, { quoted: m })
+    console.log("\x1b[1;31m" + err + "\x1b[0m")
+  }
+}
+
+let file = require.resolve(__filename)
+require("fs").watchFile(file, () => {
+  require("fs").unwatchFile(file)
+  console.log("\x1b[0;32m" + __filename + " \x1b[1;32mupdated!\x1b[0m")
+  delete require.cache[file]
+  require(file)
+})
